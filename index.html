@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projekt Ckryptbit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            neonGreen: {
+              DEFAULT: '#00FF00',
+              dark: '#00CC00',
+              light: '#33FF33',
+              glow: 'rgba(0, 255, 0, 0.5)',
+            },
+            neonCyan: {
+              DEFAULT: '#00FFFF',
+              dark: '#00CCCC',
+              light: '#33FFFF',
+              glow: 'rgba(0, 255, 255, 0.5)',
+            },
+            neonMagenta: {
+              DEFAULT: '#FF00FF',
+              dark: '#CC00CC',
+              light: '#FF33FF',
+              glow: 'rgba(255, 0, 255, 0.5)',
+            },
+            primary: { // Alias for neonGreen
+              DEFAULT: '#00FF00',
+              light: '#33FF33',
+              dark: '#00CC00',
+            },
+            secondary: { // Alias for neonCyan
+              DEFAULT: '#00FFFF',
+              light: '#33FFFF',
+              dark: '#00CCCC',
+            },
+            neutral: {
+              lightest: '#E0E0E0', // Light gray for prominent text
+              light: '#C7D2CC',   // Slightly greenish-gray for default text
+              medium: '#555555', // Mid-dark gray for less prominent elements/borders
+              dark: '#222222',   // Dark gray
+              darker: '#111111', // Very dark gray
+              darkest: '#0A0A0A' // Near black for main backgrounds
+            },
+          },
+          fontFamily: {
+            sans: ['"Fira Code"', 'monospace', 'sans-serif'], // Main font
+            mono: ['"Fira Code"', 'monospace'], // Explicit mono
+          },
+          boxShadow: {
+            'neon-green-glow': '0 0 12px 2px rgba(0, 255, 0, 0.75)',
+            'neon-cyan-glow': '0 0 12px 2px rgba(0, 255, 255, 0.75)',
+            'neon-magenta-glow': '0 0 12px 2px rgba(255, 0, 255, 0.75)',
+          },
+          animation: {
+            typing: 'typingEffect 2s steps(30, end), caretBlink .75s step-end infinite',
+            typingFast: 'typingEffect 1s steps(20, end), caretBlink .75s step-end infinite',
+            subtleGlitch: 'subtleGlitchText 0.5s linear infinite',
+            energizeBorder: 'energizeBorder 0.3s linear forwards',
+            scanLine: 'scanLineOverlay 8s linear infinite',
+          },
+          keyframes: {
+            typingEffect: {
+              'from': { width: '0' },
+              'to': { width: '100%' }
+            },
+            caretBlink: {
+              'from, to': { borderColor: 'transparent' },
+              '50%': { borderColor: 'currentColor' } // Use current text color for caret
+            },
+            scanLineOverlay: {
+              '0%': { transform: 'translateY(-100%)', opacity: '0.1' },
+              '50%': { opacity: '0.3' },
+              '100%': { transform: 'translateY(200%)', opacity: '0.1' },
+            },
+            subtleGlitchText: {
+              '0%, 100%': { transform: 'translateX(0)', opacity: '1' },
+              '25%': { transform: 'translateX(-1px) skewX(-2deg)', opacity: '0.95' },
+              '50%': { transform: 'translateX(1px) skewX(2deg)', opacity: '0.9' },
+              '75%': { transform: 'translateX(-0.5px) skewY(-1deg)', opacity: '0.98' },
+            },
+            energizeBorder: {
+                '0%': { boxShadow: '0 0 0 0px currentColor, inset 0 0 0 0px currentColor' },
+                '100%': { boxShadow: '0 0 0 1px currentColor, inset 0 0 2px 1px currentColor' } 
+            },
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- PrismJS Theme (Okaidia) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.1.0",
+    "jszip": "https://esm.sh/jszip@3.10.1",
+    "react-simple-code-editor": "https://esm.sh/react-simple-code-editor@0.13.1",
+    "prismjs/components/prism-core": "https://esm.sh/prismjs@1.29.0/components/prism-core.js",
+    "prismjs/components/prism-clike": "https://esm.sh/prismjs@1.29.0/components/prism-clike.js",
+    "prismjs/components/prism-javascript": "https://esm.sh/prismjs@1.29.0/components/prism-javascript.js",
+    "prismjs/components/prism-python": "https://esm.sh/prismjs@1.29.0/components/prism-python.js",
+    "prismjs/components/prism-json": "https://esm.sh/prismjs@1.29.0/components/prism-json.js",
+    "prismjs/components/prism-markup": "https://esm.sh/prismjs@1.29.0/components/prism-markup.js",
+    "prismjs/components/prism-css": "https://esm.sh/prismjs@1.29.0/components/prism-css.js",
+    "prismjs/components/prism-jsx": "https://esm.sh/prismjs@1.29.0/components/prism-jsx.js",
+    "prismjs/components/prism-tsx": "https://esm.sh/prismjs@1.29.0/components/prism-tsx.js",
+    "prismjs/components/prism-typescript": "https://esm.sh/prismjs@1.29.0/components/prism-typescript.js",
+    "prismjs/components/prism-markdown": "https://esm.sh/prismjs@1.29.0/components/prism-markdown.js",
+    "prismjs/components/prism-sql": "https://esm.sh/prismjs@1.29.0/components/prism-sql.js",
+    "prismjs/components/prism-java": "https://esm.sh/prismjs@1.29.0/components/prism-java.js",
+    "prismjs/components/prism-csharp": "https://esm.sh/prismjs@1.29.0/components/prism-csharp.js",
+    "prismjs/components/prism-go": "https://esm.sh/prismjs@1.29.0/components/prism-go.js",
+    "prismjs/components/prism-ruby": "https://esm.sh/prismjs@1.29.0/components/prism-ruby.js",
+    "prismjs/components/prism-rust": "https://esm.sh/prismjs@1.29.0/components/prism-rust.js",
+    "prismjs/components/prism-swift": "https://esm.sh/prismjs@1.29.0/components/prism-swift.js",
+    "prismjs/components/prism-kotlin": "https://esm.sh/prismjs@1.29.0/components/prism-kotlin.js",
+    "prismjs/components/prism-yaml": "https://esm.sh/prismjs@1.29.0/components/prism-yaml.js",
+    "prismjs/components/prism-docker": "https://esm.sh/prismjs@1.29.0/components/prism-docker.js",
+    "prismjs/components/prism-bash": "https://esm.sh/prismjs@1.29.0/components/prism-bash.js",
+    "prismjs/": "https://esm.sh/prismjs@^1.30.0/"
+  }
+}
+</script>
+<!-- PrismJS Core (minimal, languages loaded via importmap or below) -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script> -->
+<!-- Common languages for PrismJS -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script> -->
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+   .animate-fadeIn-delay {
+    animation: fadeIn 0.8s ease-out 0.5s forwards; /* 0.5s delay */
+    opacity: 0; /* Start hidden */
+  }
+
+
+  @keyframes slideInFromTop {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .animate-slideInFromTop {
+    animation: slideInFromTop 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  @keyframes glitchEffect {
+    0% { transform: translate(0); opacity: 1;}
+    10% { transform: translate(-2px, 2px) skewX(5deg); opacity: 0.8; }
+    20% { transform: translate(2px, -2px) skewY(-5deg); opacity: 1; }
+    30% { transform: translate(-1px, 1px) skewX(-2deg); opacity: 0.9; }
+    40% { transform: translate(1px, -1px) skewY(2deg); opacity: 1; }
+    50% { transform: translate(0); opacity: 1;}
+    100% { transform: translate(0); opacity: 1;}
+  }
+  .glitch-effect-active {
+    animation: glitchEffect 0.3s linear 1; /* Play once on active */
+  }
+
+  .menu-item-appear {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: menuItemAppearAnimation 0.3s ease-out forwards;
+  }
+
+  @keyframes menuItemAppearAnimation {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+  .scrambling-text {
+    display: inline-block;
+    white-space: pre; 
+  }
+
+  @keyframes floatUpAndFade {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+  }
+  .animate-float-up-fade {
+    animation: floatUpAndFade 1.5s ease-out forwards;
+  }
+
+  /* Typing effect utility */
+  .typing-text {
+    display: inline-block;
+    overflow: hidden; /* Ensures the text is not visible until the animation reveals it */
+    white-space: nowrap; /* Keeps the content on a single line */
+    vertical-align: bottom; /* Aligns caret nicely with text */
+  }
+  .typing-text-multiline { /* For multiline, white-space needs to be normal/pre-wrap */
+    display: inline-block;
+    overflow: hidden;
+    white-space: normal; /* Or pre-wrap if needed */
+    vertical-align: top;
+  }
+  .typing-caret {
+    display: inline-block;
+    width: 0.1em; /* Width of the caret */
+    background-color: currentColor; /* Use text color */
+    animation: caretBlink 0.75s step-end infinite;
+    margin-left: 0.05em;
+  }
+
+  /* Scan line overlay utility */
+  .scanline-container {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px; /* Height of the scan line */
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 255, 0, 0) 0%, /* Neon Green */
+      rgba(0, 255, 0, 0.1) 40%,
+      rgba(0, 255, 0, 0.2) 50%,
+      rgba(0, 255, 0, 0.1) 60%,
+      rgba(0, 255, 0, 0) 100%
+    );
+    animation: scanLineOverlay 8s linear infinite;
+    pointer-events: none; /* Make sure it doesn't interfere with interactions */
+  }
+   .card-hover-effect {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+   }
+   .card-hover-effect:hover {
+    transform: translateY(-3px) scale(1.01);
+   }
+
+  /* Styles for react-simple-code-editor to match theme */
+  .code-editor-wrapper {
+    flex-grow: 1;
+    position: relative; /* Needed for potential line numbers or other overlays */
+    background-color: #0A0A0A; /* neutral-darkest */
+    font-family: "Fira Code", monospace;
+    font-size: 0.75rem; /* text-xs */
+    line-height: 1.5;
+    color: #00FF00; /* neonGreen-light */
+    overflow: auto; /* Ensure scrollbars appear if content overflows */
+    padding: 0.75rem; /* p-3 */
+  }
+
+  .code-editor-wrapper > textarea,
+  .code-editor-wrapper > pre {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important; /* Make pre/textarea background transparent */
+    caret-color: #00FF00; /* neonGreen-light */
+  }
+
+  /* Scrollbar styling for code editor */
+  .code-editor-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .code-editor-wrapper::-webkit-scrollbar-track {
+    background: #111111; /* neutral-darker */
+  }
+  .code-editor-wrapper::-webkit-scrollbar-thumb {
+    background-color: #555555; /* neutral-medium */
+    border-radius: 4px;
+    border: 2px solid #111111; /* neutral-darker */
+  }
+  .code-editor-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #00FF00; /* neonGreen-DEFAULT */
+  }
+
+  /* Ensure PrismJS styles integrate with the editor's font and colors */
+  .code-editor-wrapper .token.comment,
+  .code-editor-wrapper .token.prolog,
+  .code-editor-wrapper .token.doctype,
+  .code-editor-wrapper .token.cdata {
+    color: #6a9955; /* Example: Softer green for comments if okaidia doesn't provide one I like */
+  }
+  /* Add more specific token overrides if needed to match GlitchCore theme perfectly */
+
+</style>
+</head>
+<body class="text-neutral-light font-sans antialiased">
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html><link rel="stylesheet" href="index.css">
+<script src="index.tsx" type="module"></script>
